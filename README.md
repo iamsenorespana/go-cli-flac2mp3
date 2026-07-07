@@ -90,7 +90,7 @@ Output is always saved to an `mp3/` sub-folder inside the source directory. For 
 
 - Single file: creates an `mp3/` directory next to the source file and runs `ffmpeg -ab 320k`.
 - Directory: scans for all `.flac` files, creates an `mp3/` sub-folder, then converts up to 4 files concurrently using goroutines and a buffered channel as a semaphore.
-- All conversions use 320 kbps bitrate and will overwrite existing output files (`-y`).
+- All conversions use 320 kbps bitrate, copy all metadata tags from the source (`-map_metadata 0`), write ID3v2.3 tags for broad player compatibility (`-id3v2_version 3`), include an ID3v1 tag as a year/fallback for DJ software such as Serato (`-write_id3v1 1`), and will overwrite existing output files (`-y`).
 
 ## License
 

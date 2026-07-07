@@ -156,8 +156,10 @@ func convertFile(sourceDir, outputDir, fileName string) {
 
 	fmt.Printf("⏳ Converting: %s -> mp3/%s\n", fileName, mp3Name)
 
-	// -i input -ab bitrate -y (overwrite existing)
-	cmd := exec.Command("ffmpeg", "-i", inputPath, "-ab", "320k", outputPath, "-y")
+	// -i input -map_metadata 0 (copy all tags) -id3v2_version 3 (broad player compat)
+	// -write_id3v1 1 (write ID3v1 tag as fallback; Serato reads TYER/year from both)
+	// -ab bitrate -y (overwrite existing)
+	cmd := exec.Command("ffmpeg", "-i", inputPath, "-map_metadata", "0", "-id3v2_version", "3", "-write_id3v1", "1", "-ab", "320k", outputPath, "-y")
 	
 	if err := cmd.Run(); err != nil {
 		fmt.Printf("❌ Failed to convert %s: %v\n", fileName, err)
